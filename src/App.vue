@@ -1,30 +1,36 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <div class="all_Container">
+    <h1>GoogleAPI</h1>
+    <section class="border border-2 border-warning">
+      <div>
+        <p class="h4">GoogleCalender</p>
+        <div>
+          {{ googleCalender }}
+        </div>
+      </div>
+    </section>
+  </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import { reactive, toRefs, onMounted } from "vue"
+export default {
+  setup() {
+    const data = reactive({
+      googleCalender: "test",
+    })
+    const mountedRef = onMounted(() => {
+      fetch("https://dog.ceo/api/breeds/image/random")
+        .then(function (res) {
+          return res.json()
+        })
+        .then((json) => {
+          data.googleCalender = json
+        })
+    })
 
-nav {
-  padding: 30px;
+    let { googleCalender } = toRefs(data)
+    return { googleCalender, mountedRef }
+  },
 }
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+</script>
